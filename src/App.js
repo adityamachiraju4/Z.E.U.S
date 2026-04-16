@@ -4,11 +4,11 @@ import GlobeScene from './Globe';
 import Weather from './Weather';
 import NewsTicker from './NewsTicker';
 import { detectMood, getSystemPrompt, MOOD_LABELS } from './moodEngine';
-import { loadMemory, incrementSession, updateMemory, addFact, getGreeting, buildMemoryContext } from './memoryEngine';
+import { incrementSession, updateMemory, addFact, getGreeting, buildMemoryContext } from './memoryEngine';
 
-const GROQ_API_KEY = process.env.REACT_APP_GROQ_API_KEY;
-const ELEVENLABS_API_KEY = process.env.REACT_APP_ELEVENLABS_API_KEY;
-const VOICE_ID = process.env.REACT_APP_ELEVENLABS_VOICE_ID;
+
+
+
 
 function Clock() {
   const [time, setTime] = useState('');
@@ -64,12 +64,11 @@ const speak = async (text) => {
     }
 
     const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/stream`,
+      `/api/speak`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'xi-api-key': ELEVENLABS_API_KEY,
         },
         body: JSON.stringify({
           text,
@@ -153,11 +152,10 @@ const speak = async (text) => {
     setInput('');
     setIsThinking(true);
     try {
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${GROQ_API_KEY}`,
         },
         body: JSON.stringify({
           model: 'llama-3.3-70b-versatile',
