@@ -338,3 +338,130 @@ body {
   z-index: 10;
   position: relative;
 }
+/* ── WEATHER PANEL ── */
+.weather-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 16px;
+  background: rgba(0,10,20,0.75);
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+  margin: 0 28px;
+  width: fit-content;
+  align-self: flex-start;
+}
+
+.weather-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.weather-icon { font-size: 22px; }
+
+.weather-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.weather-temp {
+  font-size: 22px;
+  font-weight: 900;
+  color: #00e5ff;
+  text-shadow: 0 0 10px rgba(0,229,255,0.6);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.weather-city {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(0,229,255,0.5);
+}
+
+.weather-condition {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(0,229,255,0.6);
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.weather-stats {
+  display: flex;
+  gap: 8px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(0,229,255,0.4);
+}
+
+.weather-divider { color: rgba(0,229,255,0.2); }
+
+.weather-loading {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(0,229,255,0.3);
+  animation: blink 1.5s infinite;
+}
+
+/* ── NEWS TICKER ── */
+.news-ticker {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  overflow: hidden;
+  border-top: 1px solid rgba(0,229,255,0.1);
+  border-bottom: 1px solid rgba(0,229,255,0.1);
+  background: rgba(0,8,18,0.9);
+  height: 28px;
+}
+
+.ticker-label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: #00e5ff;
+  background: rgba(0,229,255,0.12);
+  border-right: 1px solid rgba(0,229,255,0.25);
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.ticker-track {
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.ticker-inner {
+  display: flex;
+  white-space: nowrap;
+  animation: tickerScroll 60s linear infinite;
+}
+
+.ticker-item {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: rgba(0,229,255,0.6);
+  padding: 0 8px;
+}
+
+.ticker-sep {
+  color: rgba(0,229,255,0.25);
+  font-size: 8px;
+  margin-left: 8px;
+}
+
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

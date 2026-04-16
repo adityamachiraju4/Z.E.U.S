@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 import GlobeScene from './Globe';
+import Weather from './Weather';
+import NewsTicker from './NewsTicker';
 
-const GROQ_API_KEY = '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';
-const ELEVENLABS_API_KEY = 'sk_9ccc511836e8df18aad887784226e8c6df62d11f7730fd1d';
-const VOICE_ID = 'JBFqnCBsd6RMkjVDRZzb';
+const GROQ_API_KEY = process.env.REACT_APP_GROQ_API_KEY;
+const ELEVENLABS_API_KEY = process.env.REACT_APP_ELEVENLABS_API_KEY;
+const VOICE_ID = process.env.REACT_APP_ELEVENLABS_VOICE_ID;
 
 function Clock() {
   const [time, setTime] = useState('');
@@ -175,7 +177,8 @@ function App() {
       </header>
 
       {/* Chat */}
-      <div className="chat-wrapper">
+        <div className="chat-wrapper">
+  <Weather />
         <div className="chat-window">
           {messages.length === 0 && (
             <div className="boot-message">
@@ -205,6 +208,7 @@ function App() {
       </div>
 
       {/* Input */}
+        <NewsTicker />
       <div className="input-section">
         <div className="input-bar">
           <button
