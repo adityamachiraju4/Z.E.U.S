@@ -572,258 +572,95 @@ body {
   border-top: 1px solid rgba(0,229,255,0.1);
   padding-top: 4px;
 }
-/* ── MOBILE RESPONSIVE (max-width: 768px) ── */
+
+/* ── MOBILE RESPONSIVE — CONSOLIDATED ── */
 @media (max-width: 768px) {
 
-  /* Header — tighter */
-  .hud-header {
-    padding: 10px 14px;
-  }
-
-  .zeus-title {
-    font-size: 15px;
-    letter-spacing: 6px;
-  }
-
-  .zeus-subtitle {
-    font-size: 7px;
-    letter-spacing: 2px;
-  }
-
-  .arc-reactor {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
-  }
-
-  .hud-left { gap: 8px; }
-
-  .sys-time {
-    font-size: 9px;
-    letter-spacing: 1px;
-  }
-
-  .status-pill {
-    font-size: 8px;
-    padding: 4px 8px;
-    letter-spacing: 1px;
-  }
-
-  .mood-badge {
-    font-size: 0.55rem;
-    padding: 2px 7px;
-  }
-
-  /* Globe — hide on mobile, replace with hex grid bg only */
-  canvas {
-    display: none !important;
-  }
-
-  /* Weather — smaller, top left */
-  .weather-panel {
-    top: 68px;
-    left: 10px;
-    padding: 6px 10px;
-    gap: 4px;
-  }
-
-  .weather-temp { font-size: 16px; }
-  .weather-icon { font-size: 16px; }
-  .weather-city { font-size: 7px; }
-  .weather-condition { font-size: 7px; }
-  .weather-stats { font-size: 7px; gap: 6px; }
-
-  /* Chat area — full width, proper scroll */
-  .chat-wrapper {
-    padding: 0 12px;
-    max-width: 100%;
-    flex: 1;
-    overflow: hidden;
-  }
-
-  .chat-window {
-    padding: 12px 0;
-    gap: 12px;
-  }
-
-  .msg-bubble {
-    font-size: 13px;
-    padding: 10px 14px;
-    max-width: 92%;
-  }
-
-  .boot-message {
-    font-size: 10px;
-    letter-spacing: 2px;
-    padding: 30px 0;
-  }
-
-  /* Input bar — full width, safe area aware */
-  .input-section {
-    padding: 12px 12px 24px;
-  }
-
-  .zeus-input {
-    font-size: 13px;
-  }
-
-  .send-btn {
-    padding: 0 16px;
-    font-size: 10px;
-    letter-spacing: 2px;
-    height: 40px;
-  }
-
-  .mic-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-  }
-
-  .input-hint { display: none; }
-
-  /* Memory panel — bottom left on mobile, smaller */
-  .memory-panel {
-    bottom: 100px;
-    right: 10px;
-    min-width: 140px;
-    padding: 8px 10px;
-  }
-
-  .memory-title { font-size: 7px; }
-  .memory-key { font-size: 6px; min-width: 48px; }
-  .memory-val { font-size: 8px; }
-  .memory-meta { font-size: 6px; }
-
-  /* Corner brackets — smaller */
-  .corner { width: 14px; height: 14px; }
-
-  /* News ticker — ensure visible */
-  .news-ticker { height: 28px; }
-  .ticker-label { font-size: 7px; padding: 0 8px; }
-  .ticker-inner { animation-duration: 40s; }
-
-  /* Body — allow scroll on mobile */
+  /* Body */
   body { overflow: auto; }
-  .app-shell { height: 100dvh; min-height: 100dvh; }
-}
+  .app-shell { height: 100dvh; min-height: 100dvh; overflow: hidden; display: flex; flex-direction: column; }
 
-/* ── MOBILE FIXES v2 ── */
-@media (max-width: 768px) {
-
-  /* Fix header overflow */
-  .hud-right {
-    gap: 6px;
-  }
-
+  /* Header */
+  .hud-header { padding: 10px 12px; }
+  .zeus-title { font-size: 15px; letter-spacing: 5px; }
+  .zeus-subtitle { font-size: 7px; letter-spacing: 2px; }
+  .arc-reactor { width: 32px; height: 32px; font-size: 14px; }
+  .hud-left { gap: 8px; }
+  .hud-right { gap: 6px; }
   .sys-time { display: none; }
+  .status-pill { font-size: 8px; padding: 4px 8px; letter-spacing: 1px; }
+  .mood-badge { font-size: 0.55rem; padding: 2px 7px; }
 
-  /* Weather — compact, don't stretch */
-  .weather-panel {
-    width: auto;
-    max-width: 200px;
-  }
+  /* Hide globe */
+  canvas { display: none !important; }
 
-  /* Fill empty space with chat */
-  .chat-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    min-height: 0;
-  }
-
-  .chat-window {
-    flex: 1;
-    overflow-y: auto;
-    min-height: 0;
-  }
-
-  /* Boot message — center in available space */
-  .boot-message {
-    padding: 20px 0;
-  }
-}
-
-/* ── MOBILE FIXES v3 ── */
-@media (max-width: 768px) {
-
-  /* Weather — part of normal flow on mobile, not fixed */
+  /* Weather — inline, compact */
   .weather-panel {
     position: relative;
     top: auto;
     left: auto;
     width: calc(100% - 24px);
     max-width: 100%;
-    margin: 8px 12px;
+    margin: 6px 12px;
+    padding: 8px 12px;
     box-sizing: border-box;
   }
+  .weather-temp { font-size: 18px; }
+  .weather-icon { font-size: 18px; }
+  .weather-city { font-size: 7px; }
+  .weather-condition { font-size: 7px; }
+  .weather-stats { font-size: 7px; gap: 6px; }
 
-  /* App shell — column layout */
-  .app-shell {
-    display: flex;
-    flex-direction: column;
-    height: 100dvh;
-    overflow: hidden;
-  }
-
-  /* Chat wrapper fills remaining space */
+  /* Chat */
   .chat-wrapper {
     flex: 1;
     min-height: 0;
     overflow: hidden;
     padding: 0 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
-
   .chat-window {
-    height: 100%;
+    flex: 1;
     overflow-y: auto;
-  }
-
-  /* Memory panel — hide on mobile to reduce clutter */
-  .memory-panel {
-    display: none;
-  }
-}
-
-/* ── MOBILE FIXES v4 ── */
-@media (max-width: 768px) {
-
-  /* Make greeting and messages clearly visible */
-  .boot-message {
-    color: rgba(0,229,255,0.7);
-    font-size: 12px;
-    padding: 16px 0;
-  }
-
-  .message.assistant .msg-bubble {
-    color: #00e5ff;
-    opacity: 1;
-  }
-
-  .message.user .msg-bubble {
-    color: #e0f7fa;
-    opacity: 1;
-  }
-
-  /* Chat window — messages at bottom */
-  .chat-window {
+    min-height: 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding-bottom: 12px;
+    gap: 12px;
   }
-}
+  .msg-bubble { font-size: 13px; padding: 10px 14px; max-width: 92%; }
+  .message.assistant .msg-bubble { color: #00e5ff; }
+  .message.user .msg-bubble { color: #e0f7fa; }
 
-/* ── MOBILE FIXES v5 ── */
-@media (max-width: 768px) {
+  /* Boot message */
   .boot-message {
     color: #00e5ff !important;
     opacity: 1 !important;
     animation: none !important;
     font-size: 13px;
+    letter-spacing: 2px;
     text-align: left;
     padding: 12px 0;
-    letter-spacing: 2px;
   }
+
+  /* Input */
+  .input-section { padding: 12px 12px 28px; }
+  .zeus-input { font-size: 13px; }
+  .send-btn { padding: 0 16px; font-size: 10px; letter-spacing: 2px; height: 40px; }
+  .mic-btn { width: 40px; height: 40px; font-size: 16px; }
+  .input-hint { display: none; }
+
+  /* News ticker */
+  .news-ticker { height: 28px; }
+  .ticker-label { font-size: 7px; padding: 0 8px; }
+  .ticker-inner { animation-duration: 40s; }
+
+  /* Hide memory panel on mobile */
+  .memory-panel { display: none; }
+
+  /* Corner brackets */
+  .corner { width: 14px; height: 14px; }
 }
