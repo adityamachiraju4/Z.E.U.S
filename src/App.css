@@ -677,3 +677,27 @@ body {
     overflow-y: auto;
   }
 }
+
+/* ── MOBILE FIXES v7 — safe area + header lock ── */
+@media (max-width: 768px) {
+
+  /* Lock header to top always */
+  .hud-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(0,6,14,0.98);
+  }
+
+  /* Input bar — safe area for iPhone home indicator */
+  .input-section {
+    padding-bottom: env(safe-area-inset-bottom, 24px);
+  }
+
+  /* Prevent whole page from scrolling */
+  body {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+}
