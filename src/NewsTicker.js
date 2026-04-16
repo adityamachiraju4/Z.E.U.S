@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 const RSS_FEEDS = [
   'https://feeds.feedburner.com/TheHackersNews',
   'https://www.bleepingcomputer.com/feed/',
+  'https://hnrss.org/frontpage',
 ];
 
 const CORS_PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
@@ -13,9 +14,10 @@ function NewsTicker() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
+        const bust = `&_=${Date.now()}`;
         const results = await Promise.allSettled(
           RSS_FEEDS.map(feed =>
-            fetch(`${CORS_PROXY}${encodeURIComponent(feed)}`)
+            fetch(`${CORS_PROXY}${encodeURIComponent(feed)}${bust}`)
               .then(r => r.json())
           )
         );
@@ -29,8 +31,9 @@ function NewsTicker() {
         console.error('RSS fetch error:', e);
       }
     };
+
     fetchNews();
-    const interval = setInterval(fetchNews, 30 * 60 * 1000);
+    const interval = setInterval(fetchNews, 15 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
