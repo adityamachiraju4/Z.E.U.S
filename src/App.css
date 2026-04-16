@@ -707,3 +707,40 @@ body {
   body { overflow: auto; }
   .app-shell { height: 100dvh; min-height: 100dvh; }
 }
+
+/* ── MOBILE FIXES v2 ── */
+@media (max-width: 768px) {
+
+  /* Fix header overflow */
+  .hud-right {
+    gap: 6px;
+  }
+
+  .sys-time { display: none; }
+
+  /* Weather — compact, don't stretch */
+  .weather-panel {
+    width: auto;
+    max-width: 200px;
+  }
+
+  /* Fill empty space with chat */
+  .chat-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 0;
+  }
+
+  .chat-window {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+  }
+
+  /* Boot message — center in available space */
+  .boot-message {
+    padding: 20px 0;
+  }
+}
