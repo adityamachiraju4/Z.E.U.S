@@ -664,3 +664,16 @@ body {
   /* Corner brackets */
   .corner { width: 14px; height: 14px; }
 }
+
+/* ── MOBILE FIXES v6 — fill empty space ── */
+@media (max-width: 768px) {
+  .chat-wrapper {
+    flex: 1 1 auto;
+    height: 0;
+  }
+
+  .chat-window {
+    height: 100%;
+    overflow-y: auto;
+  }
+}
