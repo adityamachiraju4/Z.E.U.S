@@ -3,6 +3,7 @@ import './App.css';
 import GlobeScene from './Globe';
 import Weather from './Weather';
 import NewsTicker from './NewsTicker';
+import { detectMood, getSystemPrompt, MOOD_LABELS } from './moodEngine';
 
 const GROQ_API_KEY = process.env.REACT_APP_GROQ_API_KEY;
 const ELEVENLABS_API_KEY = process.env.REACT_APP_ELEVENLABS_API_KEY;
@@ -28,6 +29,7 @@ function App() {
   const [isThinking, setIsThinking] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [currentMood, setCurrentMood] = useState('default');
   const chatEndRef = useRef(null);
   const audioRef = useRef(null);
 
@@ -49,40 +51,75 @@ function App() {
     return 'ONLINE';
   };
 
-  const speak = async (text) => {
-    try {
-      setIsSpeaking(true);
-      const response = await fetch(
-        `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'xi-api-key': ELEVENLABS_API_KEY,
-          },
-          body: JSON.stringify({
-            text,
-            model_id: 'eleven_turbo_v2_5',
-            voice_settings: { stability: 0.5, similarity_boost: 0.75 },
-          }),
-        }
-      );
-      if (!response.ok) throw new Error('ElevenLabs failed');
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const audio = new Audio(url);
-      audioRef.current = audio;
-      audio.onended = () => setIsSpeaking(false);
-      audio.play();
-    } catch (error) {
-      console.error('ElevenLabs error, using browser fallback:', error);
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 1.1;
-      utterance.pitch = 0.9;
-      utterance.onend = () => setIsSpeaking(false);
-      window.speechSynthesis.speak(utterance);
+const speak = async (text) => {
+  try {
+    setIsSpeaking(true);
+
+    // Stop any current audio
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
     }
-  };
+
+    const response = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/stream`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'xi-api-key': ELEVENLABS_API_KEY,
+        },
+        body: JSON.stringify({
+          text,
+          model_id: 'eleven_turbo_v2_5',
+          voice_settings: {
+            stability: 0.4,
+            similarity_boost: 0.75,
+            speed: 1.1,
+          },
+        }),
+      }
+    );
+
+    if (!response.ok) throw new Error('ElevenLabs stream failed');
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    audioRef.current = audio;
+
+    // Preload before playing
+    audio.preload = 'auto';
+    audio.onended = () => {
+      setIsSpeaking(false);
+      URL.revokeObjectURL(url);
+    };
+    audio.onerror = () => {
+      setIsSpeaking(false);
+      URL.revokeObjectURL(url);
+    };
+
+    await audio.play();
+
+  } catch (error) {
+    console.error('ElevenLabs error, using browser fallback:', error);
+    setIsSpeaking(false);
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.15;
+    utterance.pitch = 0.85;
+    utterance.volume = 1;
+    utterance.onend = () => setIsSpeaking(false);
+    // Pick best available voice
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(v =>
+      v.name.includes('Daniel') ||
+      v.name.includes('Google UK') ||
+      v.name.includes('Alex')
+    );
+    if (preferred) utterance.voice = preferred;
+    window.speechSynthesis.speak(utterance);
+  }
+};
 
   const startListening = () => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -104,6 +141,8 @@ function App() {
 
   const sendMessage = async (overrideInput) => {
     const text = (overrideInput || input).trim();
+    const mood = detectMood(text);
+    setCurrentMood(mood);
     if (!text) return;
     const userMessage = { role: 'user', content: text };
     const newMessages = [...messages, userMessage];
@@ -122,9 +161,9 @@ function App() {
           max_tokens: 1024,
           messages: [
             {
-              role: 'system',
-              content: `You are Z.E.U.S. — Zero-latency Executive Universal System. You are Aditya Machiraju's personal Iron Man style AI assistant. You are sharp, confident, and slightly futuristic in tone. Keep responses concise and powerful. Address him as "sir" or "Aditya".`,
-            },
+             role: 'system',
+             content: getSystemPrompt(mood),
+      },
             ...newMessages,
           ],
         }),
@@ -135,7 +174,10 @@ function App() {
         content: data.choices[0].message.content,
       };
       setMessages([...newMessages, assistantMessage]);
-      speak(assistantMessage.content);
+      const speakText = assistantMessage.content.length > 400
+  ? assistantMessage.content.substring(0, 400) + '...'
+  : assistantMessage.content;
+    speak(speakText);
     } catch (error) {
       console.error('Groq error:', error);
     }
@@ -169,9 +211,12 @@ function App() {
         </div>
         <div className="hud-right">
           <div className={`status-pill ${status}`}>
-            <div className="status-dot" />
-            {getStatusLabel()}
-          </div>
+  <div className="status-dot" />
+  {getStatusLabel()}
+</div>
+<div className={`mood-badge mood-${currentMood}`}>
+  {MOOD_LABELS[currentMood]}
+</div>
           <Clock />
         </div>
       </header>
