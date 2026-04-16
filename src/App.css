@@ -701,3 +701,33 @@ body {
     width: 100%;
   }
 }
+
+/* ── MOBILE FIXES v8 — layout containment ── */
+@media (max-width: 768px) {
+
+  /* Contain message bubbles properly */
+  .msg-bubble {
+    max-width: 88vw;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Assistant bubble — add left margin so it doesn't touch edge */
+  .message.assistant .msg-bubble {
+    margin-left: 4px;
+  }
+
+  /* Fix header staying on top */
+  .hud-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+
+  /* Push app content below fixed header */
+  .app-shell {
+    padding-top: 64px;
+  }
+}
