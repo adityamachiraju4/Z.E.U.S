@@ -785,3 +785,32 @@ body {
     display: none;
   }
 }
+
+/* ── MOBILE FIXES v4 ── */
+@media (max-width: 768px) {
+
+  /* Make greeting and messages clearly visible */
+  .boot-message {
+    color: rgba(0,229,255,0.7);
+    font-size: 12px;
+    padding: 16px 0;
+  }
+
+  .message.assistant .msg-bubble {
+    color: #00e5ff;
+    opacity: 1;
+  }
+
+  .message.user .msg-bubble {
+    color: #e0f7fa;
+    opacity: 1;
+  }
+
+  /* Chat window — messages at bottom */
+  .chat-window {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 12px;
+  }
+}
