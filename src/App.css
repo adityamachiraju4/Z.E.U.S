@@ -572,3 +572,138 @@ body {
   border-top: 1px solid rgba(0,229,255,0.1);
   padding-top: 4px;
 }
+/* ── MOBILE RESPONSIVE (max-width: 768px) ── */
+@media (max-width: 768px) {
+
+  /* Header — tighter */
+  .hud-header {
+    padding: 10px 14px;
+  }
+
+  .zeus-title {
+    font-size: 15px;
+    letter-spacing: 6px;
+  }
+
+  .zeus-subtitle {
+    font-size: 7px;
+    letter-spacing: 2px;
+  }
+
+  .arc-reactor {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .hud-left { gap: 8px; }
+
+  .sys-time {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .status-pill {
+    font-size: 8px;
+    padding: 4px 8px;
+    letter-spacing: 1px;
+  }
+
+  .mood-badge {
+    font-size: 0.55rem;
+    padding: 2px 7px;
+  }
+
+  /* Globe — hide on mobile, replace with hex grid bg only */
+  canvas {
+    display: none !important;
+  }
+
+  /* Weather — smaller, top left */
+  .weather-panel {
+    top: 68px;
+    left: 10px;
+    padding: 6px 10px;
+    gap: 4px;
+  }
+
+  .weather-temp { font-size: 16px; }
+  .weather-icon { font-size: 16px; }
+  .weather-city { font-size: 7px; }
+  .weather-condition { font-size: 7px; }
+  .weather-stats { font-size: 7px; gap: 6px; }
+
+  /* Chat area — full width, proper scroll */
+  .chat-wrapper {
+    padding: 0 12px;
+    max-width: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .chat-window {
+    padding: 12px 0;
+    gap: 12px;
+  }
+
+  .msg-bubble {
+    font-size: 13px;
+    padding: 10px 14px;
+    max-width: 92%;
+  }
+
+  .boot-message {
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 30px 0;
+  }
+
+  /* Input bar — full width, safe area aware */
+  .input-section {
+    padding: 12px 12px 24px;
+  }
+
+  .zeus-input {
+    font-size: 13px;
+  }
+
+  .send-btn {
+    padding: 0 16px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    height: 40px;
+  }
+
+  .mic-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .input-hint { display: none; }
+
+  /* Memory panel — bottom left on mobile, smaller */
+  .memory-panel {
+    bottom: 100px;
+    right: 10px;
+    min-width: 140px;
+    padding: 8px 10px;
+  }
+
+  .memory-title { font-size: 7px; }
+  .memory-key { font-size: 6px; min-width: 48px; }
+  .memory-val { font-size: 8px; }
+  .memory-meta { font-size: 6px; }
+
+  /* Corner brackets — smaller */
+  .corner { width: 14px; height: 14px; }
+
+  /* News ticker — ensure visible */
+  .news-ticker { height: 28px; }
+  .ticker-label { font-size: 7px; padding: 0 8px; }
+  .ticker-inner { animation-duration: 40s; }
+
+  /* Body — allow scroll on mobile */
+  body { overflow: auto; }
+  .app-shell { height: 100dvh; min-height: 100dvh; }
+}
