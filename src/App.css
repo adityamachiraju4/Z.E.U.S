@@ -158,3 +158,37 @@ body {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
+.status-bar {
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+
+.status { color: #00e5ff88; }
+.status.online { color: #00e5ff; }
+.status.listening { color: #ff4444; animation: blink 0.8s infinite; }
+.status.speaking { color: #00ff88; animation: blink 1s infinite; }
+.status.thinking-status { color: #ffaa00; animation: blink 1s infinite; }
+
+.mic-btn {
+  background: transparent;
+  border: 1px solid #00e5ff44;
+  color: #00e5ff;
+  padding: 14px 16px;
+  font-size: 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.mic-btn:hover { border-color: #00e5ff; box-shadow: 0 0 10px #00e5ff22; }
+.mic-btn.active { border-color: #ff4444; box-shadow: 0 0 10px #ff444422; animation: blink 0.8s infinite; }
+
+.arc-reactor.speaking {
+  animation: pulse-fast 0.5s infinite;
+}
+
+@keyframes pulse-fast {
+  0%, 100% { text-shadow: 0 0 20px #00e5ff, 0 0 40px #00e5ff; }
+  50% { text-shadow: 0 0 60px #00ff88, 0 0 100px #00ff88, 0 0 140px #00ff88; }
+}
