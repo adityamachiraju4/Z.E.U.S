@@ -4,6 +4,7 @@ import GlobeScene from './Globe';
 import Weather from './Weather';
 import NewsTicker from './NewsTicker';
 import { detectMood, getSystemPrompt, MOOD_LABELS } from './moodEngine';
+import { loadMemory, incrementSession, updateMemory, addFact, getGreeting, buildMemoryContext } from './memoryEngine';
 
 const GROQ_API_KEY = process.env.REACT_APP_GROQ_API_KEY;
 const ELEVENLABS_API_KEY = process.env.REACT_APP_ELEVENLABS_API_KEY;
@@ -30,6 +31,7 @@ function App() {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [currentMood, setCurrentMood] = useState('default');
+  const [memory, setMemory] = useState(() => incrementSession());
   const chatEndRef = useRef(null);
   const audioRef = useRef(null);
 
@@ -143,6 +145,7 @@ const speak = async (text) => {
     const text = (overrideInput || input).trim();
     const mood = detectMood(text);
     setCurrentMood(mood);
+    updateMemory({ lastMood: mood, lastTopic: text.substring(0, 80) });
     if (!text) return;
     const userMessage = { role: 'user', content: text };
     const newMessages = [...messages, userMessage];
@@ -162,7 +165,7 @@ const speak = async (text) => {
           messages: [
             {
              role: 'system',
-             content: getSystemPrompt(mood),
+             content: getSystemPrompt(mood) + buildMemoryContext(memory),
       },
             ...newMessages,
           ],
@@ -174,6 +177,26 @@ const speak = async (text) => {
         content: data.choices[0].message.content,
       };
       setMessages([...newMessages, assistantMessage]);
+      // Auto-extract facts from user input
+const lower = text.toLowerCase();
+let updatedMemory = null;
+if (lower.includes('my name is')) {
+  const match = text.match(/my name is ([A-Za-z]+)/i);
+  if (match) updatedMemory = addFact('name', match[1]);
+}
+if (lower.includes('i work at') || lower.includes('i work in')) {
+  const match = text.match(/i work (?:at|in) ([^,.]+)/i);
+  if (match) updatedMemory = addFact('workplace', match[1].trim());
+}
+if (lower.includes('i use ')) {
+  const match = text.match(/i use ([^,.]+)/i);
+  if (match) updatedMemory = addFact('tool', match[1].trim());
+}
+if (lower.includes('i am a') || lower.includes("i'm a")) {
+  const match = text.match(/i(?:'m| am) a?n? ([^,.]+)/i);
+  if (match) updatedMemory = addFact('role', match[1].trim());
+}
+if (updatedMemory) setMemory({ ...updatedMemory });
       const speakText = assistantMessage.content.length > 400
   ? assistantMessage.content.substring(0, 400) + '...'
   : assistantMessage.content;
@@ -199,6 +222,18 @@ const speak = async (text) => {
       <div className="corner corner-tr" />
       <div className="corner corner-bl" />
       <div className="corner corner-br" />
+      {Object.keys(memory.facts).length > 0 && (
+  <div className="memory-panel">
+    <div className="memory-title">⬡ MEMORY ACTIVE</div>
+    {Object.entries(memory.facts).map(([k, v]) => (
+      <div key={k} className="memory-item">
+        <span className="memory-key">{k.toUpperCase()}</span>
+        <span className="memory-val">{v}</span>
+      </div>
+    ))}
+    <div className="memory-meta">SESSION {memory.sessionCount}</div>
+  </div>
+)}
 
       {/* Header */}
       <header className="hud-header">
@@ -226,10 +261,10 @@ const speak = async (text) => {
   <Weather />
         <div className="chat-window">
           {messages.length === 0 && (
-            <div className="boot-message">
-              ▸ SYSTEM ONLINE — AWAITING INPUT, ADITYA
-            </div>
-          )}
+  <div className="boot-message">
+    {getGreeting(memory)}
+  </div>
+)}
           {messages.map((msg, i) => (
             <div key={i} className={`message ${msg.role}`}>
               <span className="msg-label">
