@@ -340,6 +340,10 @@ body {
 }
 /* ── WEATHER PANEL ── */
 .weather-panel {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -347,10 +351,9 @@ body {
   background: rgba(0,5,15,0.85);
   border: 1px solid rgba(0,229,255,0.25);
   border-radius: 8px;
-  margin: 12px 0 0 0;
   width: fit-content;
-  align-self: flex-start;
   box-shadow: 0 0 20px rgba(0,229,255,0.08);
+  backdrop-filter: blur(4px);
 }
 
 .weather-top {
@@ -448,12 +451,10 @@ body {
   animation: tickerScroll 60s linear infinite;
 }
 
-.ticker-item {
-  font-size: 11px;
-  letter-spacing: 1px;
-  color: rgba(0,229,255,0.95);
-  padding: 0 8px;
-  text-shadow: 0 0 8px rgba(0,229,255,0.6);
+.ticker-sep {
+  color: rgba(0,229,255,0.5);
+  font-size: 10px;
+  margin-left: 8px;
 }
 
 .ticker-sep {
