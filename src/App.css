@@ -814,3 +814,16 @@ body {
     padding-bottom: 12px;
   }
 }
+
+/* ── MOBILE FIXES v5 ── */
+@media (max-width: 768px) {
+  .boot-message {
+    color: #00e5ff !important;
+    opacity: 1 !important;
+    animation: none !important;
+    font-size: 13px;
+    text-align: left;
+    padding: 12px 0;
+    letter-spacing: 2px;
+  }
+}

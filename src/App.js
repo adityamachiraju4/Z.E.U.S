@@ -254,9 +254,10 @@ if (updatedMemory) setMemory({ ...updatedMemory });
         </div>
       </header>
 
+      <Weather />
       {/* Chat */}
         <div className="chat-wrapper">
-  <Weather />
+
         <div className="chat-window">
           {messages.length === 0 && (
   <div className="boot-message">
